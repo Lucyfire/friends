@@ -42,7 +42,7 @@ Support
 -------
 
 If you experience a problem with flag or have a problem, file a request or
-issue on the flag queue at http://drupal.org/project/issues/friends.
+issue on the friends queue at http://drupal.org/project/issues/friends.
 
 Posting in the issue queues is a direct line of communication with the module
 authors.

@@ -21,8 +21,6 @@ class FriendsActivityContext extends ActivityContextBase {
   public function getRecipients(array $data, $last_uid, $limit) {
     $recipients = [];
 
-    \Drupal::logger('poulou')->debug('faousan');
-
     // We only know the context if there is a related object.
     if (isset($data['related_object']) && !empty($data['related_object'])) {
       $related_object = $data['related_object'][0];
@@ -37,7 +35,7 @@ class FriendsActivityContext extends ActivityContextBase {
             'target_type' => 'user',
             'target_id' => $friends->getRecipientId(),
           ];
-          // Recipient updated request send 
+          // Recipient updated request send
         }elseif($friends->getUpdaterId() == $friends->getRecipientId()){
           $recipients[] = [
             'target_type' => 'user',
