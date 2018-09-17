@@ -25,8 +25,6 @@ install contrib modules on your site.
 Configuration
 -------------
 
-Configuration of Friends module involves creating one or more flags.
-
 1. Go to Admin > Structure > Friends, and click "Manage Fields".
 2. Request Type > Storage Settings and change the values to add or remove friend request types
 
