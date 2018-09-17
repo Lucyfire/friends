@@ -26,13 +26,13 @@ class DynamicLocalTasks extends DeriverBase {
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
-    // Implement dynamic logic to provide values for the same keys as in example.links.task.yml.
+    $userId = \Drupal::routeMatch()->getRawParameter('user');
     foreach ($this->friends_types as $key => $value) {
       $this->derivatives['friends.requests:' . $key] = $base_plugin_definition;
       $this->derivatives['friends.requests:' . $key]['title'] = t('Add as a @type', ['@type' => $value]);
       $this->derivatives['friends.requests:' . $key]['route_name'] = 'friends.friends_api_controller_request';
       $this->derivatives['friends.requests:' . $key]['route_parameters'] = [
-        'user' => \Drupal::routeMatch()->getRawParameter('user'),
+        'user' => $userId,
         'type' => $key
       ];
       $this->derivatives['friends.requests:' . $key]['options'] = [
@@ -42,6 +42,9 @@ class DynamicLocalTasks extends DeriverBase {
             'use-ajax'
           ],
         ],
+      ];
+      $this->derivatives['friends.requests:' . $key]['cache_tags'] = [
+        'friends:add:' . $userId . ':type:' . $key
       ];
     }
 

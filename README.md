@@ -37,3 +37,19 @@ You can do the same thing to status but the following three are required
 
 Once you are done configuring head to a users page and you should see tab links
 to add the user as the types you defined.
+
+Support
+-------
+
+If you experience a problem with friends or have a problem, file a request or
+issue on the friends queue at http://drupal.org/project/issues/friends.
+
+Posting in the issue queues is a direct line of communication with the module
+authors.
+
+No guarantee is provided with this software, no matter how critical your
+information, module authors are not responsible for damage caused by this
+software or obligated in any way to correct problems you may experience.
+
+Licensed under the GPL 2.0.
+http://www.gnu.org/licenses/gpl-2.0.txt

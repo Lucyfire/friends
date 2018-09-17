@@ -54,7 +54,7 @@ class FriendsSettingsForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('friends.settings');
-    $form['asd']['#markup'] = 'Tokens are available for the below messages.';
+    $form['tokens']['#markup'] = $this->t('Tokens are available for the below messages.');
     $form['friends_settings'] = [
       '#theme' => 'token_tree_link',
       '#token_types' => ['friends'],

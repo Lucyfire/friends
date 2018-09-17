@@ -90,30 +90,31 @@ function friends_preprocess_activity(&$vars) {
       }
     }
   }
-  
+
   $vars['status'] = $friendRequest->get('friends_status')->value;
 
+  // Add status update buttons only if friend request is pending
   if($vars['status'] != 'pending') {
     return;
   }
-
+  $options = [
+    'attributes'=> [
+      'class' => [
+        'use-ajax',
+        'btn',
+        'btn-primary',
+        'button',
+        'button--primary',
+        'waves-effect',
+        'waves-btn',
+        'waves-light',
+      ]
+    ]
+  ];
   foreach ($friendsService->getAllowedStatus() as $key => $value) {
     $vars['status_links'][$key] = Link::fromTextAndUrl(
         $value,
-        $friendRequest->getStatusUrl($key, [
-          'attributes'=> [
-            'class' => [
-              'use-ajax',
-              'btn',
-              'btn-primary',
-              'button',
-              'button--primary',
-              'waves-effect',
-              'waves-btn',
-              'waves-light',
-            ]
-          ]
-        ])
+        $friendRequest->getStatusUrl($key, $options)
       )->toRenderable();
   }
 }

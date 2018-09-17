@@ -25,32 +25,6 @@ entity.friends.delete_form:
   title: Delete
   weight: 10
 
-friends.accept:
-  route_name: friends.friends_api_controller_request_response
-  base_route: entity.friends.canonical
-  title: 'Accept'
-  route_parameters:
-    status:  'accepted'
-  options:
-    attributes:
-      class:
-        - use-ajax
-        - api-response
-  weight: 200
-
-friends.decline:
-  route_name: friends.friends_api_controller_request_response
-  base_route: entity.friends.canonical
-  title: 'Decline'
-  route_parameters:
-    status:  'declined'
-  options:
-    attributes:
-      class:
-        - use-ajax
-        - api-response
-  weight: 201
-
 friends.requests:
   deriver: 'Drupal\friends\Plugin\Derivative\DynamicLocalTasks'
   base_route: entity.user.canonical

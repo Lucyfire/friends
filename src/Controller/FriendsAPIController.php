@@ -10,6 +10,7 @@ use Drupal\mailsystem\MailsystemManager;
 use Drupal\activity_creator\Plugin\ActivityActionManager;
 
 use Drupal\user\UserInterface;
+use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\friends\Entity\Friends;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
@@ -59,6 +60,13 @@ class FriendsAPIController extends ControllerBase {
    */
   protected $friendsService;
 
+  /**
+   * Cache Tags Invalidator.
+   *
+   * @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface
+   */
+  protected $cacheTagsInvalidator;
+
 
 
   /**
@@ -69,7 +77,8 @@ class FriendsAPIController extends ControllerBase {
     MessengerInterface $messenger,
     MailsystemManager $plugin_manager_mail,
     ActivityActionManager $plugin_manager_activity_action_processor,
-    FriendsService $friends_service
+    FriendsService $friends_service,
+    CacheTagsInvalidatorInterface $cache_tags_invalidator
   ) {
     $this->entityTypeManager = $entity_type_manager;
     $this->messenger = $messenger;
@@ -77,6 +86,7 @@ class FriendsAPIController extends ControllerBase {
     $this->activityManager = $plugin_manager_activity_action_processor;
     $this->friendsStorage = $entity_type_manager->getStorage('friends');
     $this->friendsService = $friends_service;
+    $this->cacheTagsInvalidator = $cache_tags_invalidator;
   }
 
   /**
@@ -88,7 +98,8 @@ class FriendsAPIController extends ControllerBase {
       $container->get('messenger'),
       $container->get('plugin.manager.mail'),
       $container->get('plugin.manager.activity_action.processor'),
-      $container->get('friends.default')
+      $container->get('friends.default'),
+      $container->get('cache_tags.invalidator')
     );
   }
 
@@ -103,7 +114,6 @@ class FriendsAPIController extends ControllerBase {
     $allowed_types = $this->friendsService->getAllowedTypes();
 
     $friends = $this->friendsStorage->create([
-      // 'user_id' => $this->currentUser()->id(),
       'recipient' => $user->id(),
       'friends_type' => $type
     ]);
@@ -123,6 +133,7 @@ class FriendsAPIController extends ControllerBase {
       $content,
       ['width' => '50%']
     ));
+    $this->cacheTagsInvalidator->invalidateTags(['friends:add:' . $user->id() . ':type:' . $type]);
 
     return $response;
   }
@@ -146,14 +157,16 @@ class FriendsAPIController extends ControllerBase {
       ]),
     ];
 
+    // $this->cacheTagsInvalidator->invalidateTags(['friends:add:' . $friends->getOwner()->id() . ':type:'. $friends->get('friends_type')->value ]);
+
+
     $response->addCommand(new RemoveCommand('.friends-api-response--' . $friends->id()));
-    // $response->addCommand(new RemoveCommand('.api--' . $friends->id() . '--response'));
-    $response->addCommand(new OpenModalDialogCommand($this->t('@type', [
-        '@type' => $allowed_status[$status]
-      ]),
-      $content,
-      ['width' => '50%']
-    ));
+    // $response->addCommand(new OpenModalDialogCommand($this->t('@type', [
+    //     '@type' => $allowed_status[$status]
+    //   ]),
+    //   $content,
+    //   ['width' => '50%']
+    // ));
 
     return $response;
 
